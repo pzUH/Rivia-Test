@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CulinaPath - Eksplorasi Karir Kuliner (Teori Donald E. Super)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Konfigurasi Tema Tailwind -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        neonPink: {
+                            light: '#ff7edb',
+                            DEFAULT: '#ff1493',
+                            glow: '#ff007f',
+                            dark: '#c20060'
+                        },
+                        cyberBg: '#0f0518'
+                    },
+                    boxShadow: {
+                        'neon': '0 0 15px rgba(255, 20, 147, 0.5), 0 0 30px rgba(255, 0, 127, 0.3)',
+                        'neon-sm': '0 0 8px rgba(255, 20, 147, 0.6)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.45)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS untuk Efek Glassmorphism & Animasi Neon -->
+    <style>
+        body {
+            background-color: #0d0415;
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(255, 20, 147, 0.22) 0%, transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(168, 85, 247, 0.2) 0%, transparent 45%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 60%);
+            background-attachment: fixed;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Card */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 105, 180, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-panel-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-panel-hover:hover {
+            background: rgba(255, 20, 147, 0.08);
+            border-color: rgba(255, 20, 147, 0.65);
+            box-shadow: 0 0 20px rgba(255, 20, 147, 0.35);
+            transform: translateY(-2px);
+        }
+
+        /* Neon Text Glow */
+        .text-neon-glow {
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.75), 0 0 20px rgba(255, 20, 147, 0.4);
+        }
+
+        /* Animasi Transisi Halaman */
+        .view-section {
+            animation: fadeSlideUp 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0415;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff1493;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased selection:bg-pink-600 selection:text-white">
+
+    <!-- Notifikasi Toast / Message Box (Pengganti alert()) -->
+    <div id="toast-container" class="fixed top-20 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+    <!-- Header & Navigasi Atas (Desktop & Status Sinkronisasi) -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-pink-500/30 rounded-b-2xl mx-2 mt-2 sm:mx-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Logo Brand -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="App.navigate('beranda')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-600 to-fuchsia-500 flex items-center justify-center shadow-neon-sm">
+                    <i class="fa-solid fa-utensils text-white text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-lg tracking-tight text-white flex items-center gap-1">
+                        Culina<span class="text-pink-400 text-neon-glow">Path</span>
+                    </h1>
+                    <p class="text-[10px] text-pink-200/70 tracking-wider uppercase">SMK Kuliner • Super Theory</p>
+                </div>
+            </div>
+
+            <!-- Navigasi Desktop -->
+            <nav class="hidden md:flex items-center gap-1 lg:gap-2" id="desktop-nav">
+                <button data-target="beranda" onclick="App.navigate('beranda')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-house"></i> Beranda
+                </button>
+                <button data-target="profil" onclick="App.navigate('profil')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-user-chef"></i> Profil
+                </button>
+                <button data-target="tes" onclick="App.navigate('tes')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-clipboard-check"></i> Tes Karir
+                </button>
+                <button data-target="movie" onclick="App.navigate('movie')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-film"></i> Movie
+                </button>
+                <button data-target="referensi" onclick="App.navigate('referensi')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-book-open"></i> Referensi
+                </button>
+                <button data-target="kontak" onclick="App.navigate('kontak')" class="nav-btn px-3.5 py-2 rounded-xl text-sm font-medium transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-headset"></i> Kontak
+                </button>
+            </nav>
+
+            <!-- Indikator Status Hybrid (Online / Offline & Antrean Sinkronisasi) -->
+            <div class="flex items-center gap-2">
+                <button onclick="SyncManager.triggerManualSync()" title="Klik untuk cek sinkronisasi" id="sync-status-badge" class="px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2 border transition-all cursor-pointer">
+                    <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="status-text">Online</span>
+                    <span id="pending-badge" class="hidden bg-pink-600 text-white text-[10px] px-1.5 py-0.2 rounded-full">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama Dinamis (Single Page Application Views) -->
+    <main id="app-content" class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-28 md:pb-12">
+        <!-- View akan dirender di sini secara dinamis oleh JavaScript -->
+    </main>
+
+    <!-- Navigasi Bawah Mobile (Bottom Bar Touch-Friendly) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 glass-panel border-t border-pink-500/40 rounded-t-2xl px-1 py-1.5">
+        <div class="grid grid-cols-6 gap-1 text-center" id="mobile-nav">
+            <button data-target="beranda" onclick="App.navigate('beranda')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-house text-base mb-1"></i>
+                <span>Beranda</span>
+            </button>
+            <button data-target="profil" onclick="App.navigate('profil')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-id-card text-base mb-1"></i>
+                <span>Profil</span>
+            </button>
+            <button data-target="tes" onclick="App.navigate('tes')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-fire-burner text-base mb-1"></i>
+                <span>Tes</span>
+            </button>
+            <button data-target="movie" onclick="App.navigate('movie')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-clapperboard text-base mb-1"></i>
+                <span>Movie</span>
+            </button>
+            <button data-target="referensi" onclick="App.navigate('referensi')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-book-bookmark text-base mb-1"></i>
+                <span>Referensi</span>
+            </button>
+            <button data-target="kontak" onclick="App.navigate('kontak')" class="nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium transition-all">
+                <i class="fa-solid fa-paper-plane text-base mb-1"></i>
+                <span>Kontak</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Footer Desktop -->
+    <footer class="hidden md:block border-t border-pink-500/20 py-5 text-center text-xs text-pink-200/60">
+        <p>© 2026 <span class="text-pink-400 font-semibold">CulinaPath</span> — Aplikasi Bimbingan Karir Siswa SMK Tata Boga & Kuliner (Fase Eksplorasi Donald E. Super).</p>
+    </footer>
+
+    <!-- Logika Aplikasi Modular (100% Client-Side) -->
+    <script>
+        /**
+         * 1. MODUL PENYIMPANAN & SINKRONISASI HYBRID (Offline-First)
+         * Mengelola penyimpanan ke localStorage, deteksi jaringan, dan antrean sinkronisasi otomatis.
+         */
+        const SyncManager = {
+            STORAGE_KEY_RESULTS: 'culinapath_quiz_results_v1',
+            STORAGE_KEY_QUEUE: 'culinapath_sync_queue_v1',
+            STORAGE_KEY_PROFILE: 'culinapath_student_profile_v1',
+
+            init() {
+                window.addEventListener('online', () => this.handleNetworkChange(true));
+                window.addEventListener('offline', () => this.handleNetworkChange(false));
+                this.updateStatusUI();
+                
+                // Cek antrean saat aplikasi pertama kali dimuat jika sedang online
+                if (navigator.onLine) {
+                    this.processQueue();
+                }
+            },
+
+            handleNetworkChange(isOnline) {
+                this.updateStatusUI();
+                if (isOnline) {
+                    UI.showToast('Koneksi terhubung kembali! Memeriksa data tertunda...', 'success');
+                    this.processQueue();
+                } else {
+                    UI.showToast('Mode Offline aktif. Hasil tes akan disimpan lokal di perangkat.', 'warning');
+                }
+            },
+
+            updateStatusUI() {
+                const isOnline = navigator.onLine;
+                const badge = document.getElementById('sync-status-badge');
+                const dot = document.getElementById('status-dot');
+                const text = document.getElementById('status-text');
+                const pendingBadge = document.getElementById('pending-badge');
+                const queue = this.getQueue();
+
+                if (isOnline) {
+                    badge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2 border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 transition-all cursor-pointer';
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+                    text.textContent = 'Online';
+                } else {
+                    badge.className = 'px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-2 border border-amber-500/40 bg-amber-500/10 text-amber-300 transition-all cursor-pointer';
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400';
+                    text.textContent = 'Offline';
+                }
+
+                if (queue.length > 0) {
+                    pendingBadge.textContent = `${queue.length} tertunda`;
+                    pendingBadge.classList.remove('hidden');
+                } else {
+                    pendingBadge.classList.add('hidden');
+                }
+            },
+
+            saveQuizResult(resultObj) {
+                try {
+                    // Simpan ke riwayat lokal utama
+                    const history = this.getHistory();
+                    history.unshift(resultObj);
+                    localStorage.setItem(this.STORAGE_KEY_RESULTS, JSON.stringify(history));
+
+                    // Masukkan ke antrean sinkronisasi cloud
+                    const queue = this.getQueue();
+                    queue.push(resultObj);
+                    localStorage.setItem(this.STORAGE_KEY_QUEUE, JSON.stringify(queue));
+
+                    this.updateStatusUI();
+
+                    if (navigator.onLine) {
+                        this.processQueue();
+                    } else {
+                        UI.showToast('Tersimpan secara lokal (Offline). Akan diunggah otomatis saat online.', 'info');
+                    }
+                } catch (e) {
+                    console.error('Gagal menyimpan ke localStorage:', e);
+                    UI.showToast('Terjadi kesalahan penyimpanan lokal.', 'error');
+                }
+            },
+
+            processQueue() {
+                const queue = this.getQueue();
+                if (queue.length === 0) return;
+
+                // Simulasi pengiriman asynchronous ke server / Google Sheets / Cloud DB
+                setTimeout(() => {
+                    try {
+                        const history = this.getHistory();
+                        const syncedIds = queue.map(item => item.id);
+                        
+                        // Tandai status synced di riwayat
+                        const updatedHistory = history.map(item => {
+                            if (syncedIds.includes(item.id)) {
+                                return { ...item, synced: true, syncedAt: new Date().toLocaleTimeString('id-ID') };
+                            }
+                            return item;
+                        });
+
+                        localStorage.setItem(this.STORAGE_KEY_RESULTS, JSON.stringify(updatedHistory));
+                        localStorage.setItem(this.STORAGE_KEY_QUEUE, JSON.stringify([]));
+                        
+                        this.updateStatusUI();
+                        UI.showToast(`${queue.length} data hasil eksplorasi karir berhasil disinkronkan!`, 'success');
+                        
+                        // Refresh tampilan jika sedang di halaman Tes atau Profil
+                        if (App.currentView === 'tes' || App.currentView === 'profil') {
+                            App.renderView(App.currentView);
+                        }
+                    } catch (err) {
+                        console.error('Sync gagal:', err);
+                    }
+                }, 1200);
+            },
+
+            triggerManualSync() {
+                if (!navigator.onLine) {
+                    UI.showToast('Anda sedang Offline. Hubungkan internet untuk menyinkronkan data.', 'warning');
+                    return;
+                }
+                const queue = this.getQueue();
+                if (queue.length === 0) {
+                    UI.showToast('Semua data sudah tersinkronisasi dengan aman.', 'success');
+                } else {
+                    UI.showToast('Menyinkronkan data tertunda...', 'info');
+                    this.processQueue();
+                }
+            },
+
+            getHistory() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.STORAGE_KEY_RESULTS)) || [];
+                } catch {
+                    return [];
+                }
+            },
+
+            getQueue() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.STORAGE_KEY_QUEUE)) || [];
+                } catch {
+                    return [];
+                }
+            },
+
+            getProfile() {
+                try {
+                    return JSON.parse(localStorage.getItem(this.STORAGE_KEY_PROFILE)) || {
+                        nama: 'Alya Putri Maharani',
+                        usia: '16 Tahun',
+                        kelas: 'XI Kuliner 2',
+                        sekolah: 'SMK Negeri Pariwisata & Tata Boga',
+                        minatUtama: 'Pastry & Bakery Artisan'
+                    };
+                } catch {
+                    return {};
+                }
+            },
+
+            saveProfile(profileData) {
+                localStorage.setItem(this.STORAGE_KEY_PROFILE, JSON.stringify(profileData));
+                UI.showToast('Profil siswa berhasil diperbarui!', 'success');
+            }
+        };
+
+        /**
+         * 2. BANK DATA INSTRUMEN TES EKSPLORASI KARIR (TEORI DONALD E. SUPER)
+         * Disesuaikan khusus untuk Siswa SMK Kuliner usia 16-17 tahun (Tahap Exploration: Crystallizing, Specifying, Implementing).
+         */
+        const QuizData = {
+            questions: [
+                {
+                    id: 1,
+                    dimension: 'Self-Concept (Konsep Diri Kuliner)',
+                    text: 'Saat praktik di dapur sekolah (kitchen lab), peran apa yang paling membuatmu merasa percaya diri dan bersemangat?',
+                    options: [
+                        { text: 'Merancang tampilan plating dan menciptakan resep fusion baru (R&D / Chef Kreatif)', score: 4, track: 'Culinary Arts & Innovation' },
+                        { text: 'Menimbang bahan dengan presisi tinggi untuk membuat roti, cake, dan dessert (Pastry & Bakery)', score: 4, track: 'Pastry & Bakery Specialist' },
+                        { text: 'Mengatur alur kerja tim dapur agar pesanan keluar tepat waktu (Kitchen Management)', score: 3, track: 'F&B Management & Hospitality' },
+                        { text: 'Menghitung modal bahan baku dan merencanakan strategi jualan produk makanan (Foodpreneur)', score: 4, track: 'Culinary Entrepreneurship' }
+                    ]
+                },
+                {
+                    id: 2,
+                    dimension: 'Crystallizing (Kristalisasi Pilihan Karir)',
+                    text: 'Di usia 16-17 tahun ini, bagaimana gambaran rencana karirmu setelah lulus dari SMK jurusan Kuliner?',
+                    options: [
+                        { text: 'Sudah punya target spesifik: ingin bekerja di hotel bintang 5 atau kapal pesiar internasional', score: 4, track: 'Culinary Arts & Innovation' },
+                        { text: 'Ingin membuka usaha café, toko kue online, atau franchise kuliner milik sendiri', score: 4, track: 'Culinary Entrepreneurship' },
+                        { text: 'Ingin melanjutkan kuliah D4/S1 Tata Boga, Teknologi Pangan, atau Manajemen Perhotelan', score: 3, track: 'F&B Management & Hospitality' },
+                        { text: 'Masih mencoba berbagai divisi dapur untuk menemukan spesialisasi yang paling cocok', score: 2, track: 'Pastry & Bakery Specialist' }
+                    ]
+                },
+                {
+                    id: 3,
+                    dimension: 'Specifying (Spesifikasi Kompetensi & PKL)',
+                    text: 'Menghadapi program Praktik Kerja Lapangan (PKL) / Magang industri, langkah persiapan apa yang sudah kamu lakukan?',
+                    options: [
+                        { text: 'Membuat portofolio foto hasil masakan dan melatih kecepatan dasar memotong (knife skills)', score: 4, track: 'Culinary Arts & Innovation' },
+                        { text: 'Riset standar kebersihan industri (HACCP) dan melatih teknik dekorasi kue modern', score: 4, track: 'Pastry & Bakery Specialist' },
+                        { text: 'Mempelajari bahasa Inggris perhotelan dan etika pelayanan tamu (hospitality)', score: 3, track: 'F&B Management & Hospitality' },
+                        { text: 'Mulai mencoba berjualan pre-order (PO) camilan di sekolah untuk melatih mental bisnis', score: 4, track: 'Culinary Entrepreneurship' }
+                    ]
+                },
+                {
+                    id: 4,
+                    dimension: 'Career Adaptability (Adaptabilitas Dapur)',
+                    text: 'Jika saat ujian praktik masakanmu mengalami kegagalan (misal: saus pecah atau adonan bantat) 20 menit sebelum penilaian, apa reaksimu?',
+                    options: [
+                        { text: 'Tetap tenang, menganalisis penyebab kesalahan suhu/bahan, lalu segera membuat ulang versi cepat', score: 4, track: 'Culinary Arts & Innovation' },
+                        { text: 'Memodifikasi tekstur menjadi komponen dessert baru yang tetap layak saji dan estetik', score: 4, track: 'Pastry & Bakery Specialist' },
+                        { text: 'Meminta masukan cepat dari rekan kelompok/guru untuk penyelamatan penyajian tepat waktu', score: 3, track: 'F&B Management & Hospitality' },
+                        { text: 'Mencatat evaluasi kegagalan tersebut agar tidak merugi jika diproduksi untuk dijual', score: 3, track: 'Culinary Entrepreneurship' }
+                    ]
+                },
+                {
+                    id: 5,
+                    dimension: 'Implementing (Implementasi Langkah Karir)',
+                    text: 'Aktivitas di luar jam pelajaran sekolah mana yang paling sering kamu ikuti untuk mendukung karir kulinermu?',
+                    options: [
+                        { text: 'Mengikuti lomba memasak (LKS SMK) atau menonton dokumenter teknik memasak profesional', score: 4, track: 'Culinary Arts & Innovation' },
+                        { text: 'Mengikuti kelas/tutorial baking kekinian dan tren dekorasi pastry di media sosial', score: 4, track: 'Pastry & Bakery Specialist' },
+                        { text: 'Aktif di organisasi sekolah/OSIS untuk melatih kepemimpinan dan komunikasi tim', score: 3, track: 'F&B Management & Hospitality' },
+                        { text: 'Belajar food photography dan pemasaran digital (TikTok/Instagram) untuk promosi produk makanan', score: 4, track: 'Culinary Entrepreneurship' }
+                    ]
+                }
+            ],
+
+            getStageInterpretation(totalScore) {
+                if (totalScore >= 18) {
+                    return {
+                        stage: 'Tahap Specifying & Implementing (Kematangan Karir Tinggi)',
+                        badgeColor: 'text-emerald-300 border-emerald-400/50 bg-emerald-500/20',
+                        summary: 'Selamat! Di usia 16-17 tahun, kamu telah melampaui fase eksplorasi awal dengan sangat baik. Konsep diri kulinermu sudah terarah, dan kamu siap mengimplementasikan keahlianmu menuju PKL industri maupun wirausaha kuliner.',
+                        recommendation: 'Fokuslah menyusun portofolio digital masakanmu, ikuti sertifikasi kompetensi BNSP bidang Tata Boga, dan pilih tempat PKL yang sesuai dengan spesialisasi impianmu.'
+                    };
+                } else if (totalScore >= 13) {
+                    return {
+                        stage: 'Tahap Crystallizing (Pengkristalan Minat Karir)',
+                        badgeColor: 'text-pink-300 border-pink-400/50 bg-pink-500/20',
+                        summary: 'Kamu sedang berada tepat pada fase inti perkembangan karir Donald E. Super untuk remaja usia 16-17 tahun! Kamu mulai mengenali kekuatanmu di dapur, namun masih membutuhkan penguatan pada satu jalur spesialisasi utama.',
+                        recommendation: 'Eksplorasi lebih dalam antara divisi Hot Kitchen, Pastry, atau Manajemen F&B melalui diskusi dengan guru produktif dan alumni SMK.'
+                    };
+                } else {
+                    return {
+                        stage: 'Tahap Tentatif / Eksplorasi Awal',
+                        badgeColor: 'text-amber-300 border-amber-400/50 bg-amber-500/20',
+                        summary: 'Kamu masih dalam proses mengenal potensi dirimu di dunia kuliner. Hal ini sangat wajar di usia SMK! Jadikan setiap jam praktik di lab dapur sebagai ajang mencoba berbagai peran.',
+                        recommendation: 'Mulailah mencatat jenis praktik dapur yang paling kamu nikmati dan tonton referensi film/dokumenter kuliner untuk memantik inspirasi karirmu.'
+                    };
+                }
+            }
+        };
+
+        /**
+         * 3. KOMPONEN UI & NOTIFIKASI
+         */
+        const UI = {
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const toast = document.createElement('div');
+                
+                const styles = {
+                    success: 'border-emerald-400/60 bg-emerald-950/85 text-emerald-200',
+                    warning: 'border-amber-400/60 bg-amber-950/85 text-amber-200',
+                    error: 'border-rose-500/60 bg-rose-950/85 text-rose-200',
+                    info: 'border-pink-400/60 bg-pink-950/85 text-pink-100'
+                };
+
+                const icons = {
+                    success: 'fa-circle-check text-emerald-400',
+                    warning: 'fa-triangle-exclamation text-amber-400',
+                    error: 'fa-circle-xmark text-rose-400',
+                    info: 'fa-sparkles text-pink-400'
+                };
+
+                toast.className = `pointer-events-auto glass-panel border ${styles[type]} px-4 py-3 rounded-2xl shadow-lg flex items-start gap-3 text-xs font-medium transform transition-all duration-300 translate-x-4 opacity-0`;
+                toast.innerHTML = `
+                    <i class="fa-solid ${icons[type]} text-base mt-0.5"></i>
+                    <p class="leading-relaxed">${message}</p>
+                `;
+
+                container.appendChild(toast);
+                requestAnimationFrame(() => {
+                    toast.classList.remove('translate-x-4', 'opacity-0');
+                });
+
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'translate-x-4');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3800);
+            }
+        };
+
+        /**
+         * 4. CONTROLLER UTAMA & ROUTING VIEW
+         */
+        const App = {
+            currentView: 'beranda',
+            quizState: {
+                step: 0, // 0 = intro, 1..N = soal, 99 = hasil
+                answers: []
+            },
+
+            init() {
+                SyncManager.init();
+                this.navigate('beranda');
+            },
+
+            navigate(viewName) {
+                this.currentView = viewName;
+                this.updateActiveNav(viewName);
+                this.renderView(viewName);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+
+            updateActiveNav(viewName) {
+                // Desktop Nav
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    if (btn.dataset.target === viewName) {
+                        btn.className = 'nav-btn px-3.5 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-pink-600 to-fuchsia-600 text-white shadow-neon-sm flex items-center gap-2 transition-all';
+                    } else {
+                        btn.className = 'nav-btn px-3.5 py-2 rounded-xl text-sm font-medium text-pink-100/75 hover:text-white hover:bg-pink-500/15 flex items-center gap-2 transition-all';
+                    }
+                });
+
+                // Mobile Bottom Nav
+                document.querySelectorAll('.nav-btn-mobile').forEach(btn => {
+                    if (btn.dataset.target === viewName) {
+                        btn.className = 'nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-bold text-pink-400 bg-pink-500/20 border border-pink-500/40 shadow-neon-sm transition-all';
+                    } else {
+                        btn.className = 'nav-btn-mobile flex flex-col items-center justify-center py-2 px-1 rounded-xl text-[11px] font-medium text-pink-100/60 hover:text-pink-200 transition-all';
+                    }
+                });
+            },
+
+            renderView(viewName) {
+                const container = document.getElementById('app-content');
+                switch (viewName) {
+                    case 'beranda':
+                        container.innerHTML = Views.beranda();
+                        break;
+                    case 'profil':
+                        container.innerHTML = Views.profil();
+                        break;
+                    case 'tes':
+                        container.innerHTML = Views.tes();
+                        break;
+                    case 'movie':
+                        container.innerHTML = Views.movie();
+                        break;
+                    case 'referensi':
+                        container.innerHTML = Views.referensi();
+                        break;
+                    case 'kontak':
+                        container.innerHTML = Views.kontak();
+                        break;
+                    default:
+                        container.innerHTML = Views.beranda();
+                }
+            },
+
+            // Handler Interaksi Tes Kuis
+            startQuiz() {
+                this.quizState = { step: 1, answers: [] };
+                this.renderView('tes');
+            },
+
+            selectAnswer(optionIndex) {
+                const currentQ = QuizData.questions[this.quizState.step - 1];
+                const chosenOption = currentQ.options[optionIndex];
+                
+                this.quizState.answers.push({
+                    questionId: currentQ.id,
+                    dimension: currentQ.dimension,
+                    chosenText: chosenOption.text,
+                    score: chosenOption.score,
+                    track: chosenOption.track
+                });
+
+                if (this.quizState.step < QuizData.questions.length) {
+                    this.quizState.step++;
+                    this.renderView('tes');
+                } else {
+                    this.finishQuiz();
+                }
+            },
+
+            finishQuiz() {
+                const totalScore = this.quizState.answers.reduce((acc, item) => acc + item.score, 0);
+                const maxScore = QuizData.questions.length * 4;
+                const percentage = Math.round((totalScore / maxScore) * 100);
+
+                // Hitung jalur karir kuliner dominan
+                const trackCounts = {};
+                this.quizState.answers.forEach(ans => {
+                    trackCounts[ans.track] = (trackCounts[ans.track] || 0) + 1;
+                });
+                const dominantTrack = Object.keys(trackCounts).reduce((a, b) => trackCounts[a] > trackCounts[b] ? a : b);
+                const interpretation = QuizData.getStageInterpretation(totalScore);
+
+                const resultRecord = {
+                    id: 'RES-' + Date.now(),
+                    date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                    totalScore,
+                    maxScore,
+                    percentage,
+                    dominantTrack,
+                    stageTitle: interpretation.stage,
+                    synced: false
+                };
+
+                // Simpan via Hybrid SyncManager
+                SyncManager.saveQuizResult(resultRecord);
+                this.quizState.lastResult = resultRecord;
+                this.quizState.step = 99;
+                this.renderView('tes');
+            },
+
+            saveProfileForm(event) {
+                event.preventDefault();
+                const updated = {
+                    nama: document.getElementById('prof-nama').value,
+                    usia: document.getElementById('prof-usia').value,
+                    kelas: document.getElementById('prof-kelas').value,
+                    sekolah: document.getElementById('prof-sekolah').value,
+                    minatUtama: document.getElementById('prof-minat').value
+                };
+                SyncManager.saveProfile(updated);
+                this.renderView('profil');
+            },
+
+            submitDummyContact(event) {
+                event.preventDefault();
+                UI.showToast('Pesan konsultasi berhasil dikirim ke Guru BK / Konselor Karir SMK!', 'success');
+                event.target.reset();
+            }
+        };
+
+        /**
+         * 5. TEMPLATE VIEW (BERANDA, PROFIL, TES, MOVIE, REFERENSI, KONTAK)
+         */
+        const Views = {
+            beranda() {
+                const profile = SyncManager.getProfile();
+                const historyCount = SyncManager.getHistory().length;
+
+                return `
+                <div class="view-section space-y-8">
+                    <!-- Hero Banner Glassmorphism -->
+                    <section class="glass-panel rounded-3xl p-6 sm:p-10 relative overflow-hidden border border-pink-500/40">
+                        <div class="absolute -top-24 -right-24 w-64 h-64 bg-pink-600/30 rounded-full blur-3xl pointer-events-none"></div>
+                        <div class="relative z-10 max-w-3xl space-y-5">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-pink-500/20 text-pink-300 border border-pink-400/40">
+                                <i class="fa-solid fa-sparkles"></i> Fase Eksplorasi Karir (Usia 16–17 Tahun)
+                            </span>
+                            <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                                Racik Masa Depan Karir <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-rose-400 text-neon-glow">Kulinermu</span> Sekarang!
+                            </h2>
+                            <p class="text-sm sm:text-base text-pink-100/80 leading-relaxed">
+                                Halo, <strong class="text-pink-300">${profile.nama}</strong>! Platform interaktif berbasis <strong>Teori Perkembangan Karir Donald E. Super</strong> ini dirancang khusus untuk membantumu memetakan potensi diri di dunia Tata Boga & Hospitality—bahkan saat tanpa koneksi internet.
+                            </p>
+                            <div class="flex flex-wrap gap-3 pt-2">
+                                <button onclick="App.navigate('tes')" class="px-6 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 text-white font-bold text-sm shadow-neon transition-all flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-solid fa-play"></i> Mulai Tes Eksplorasi Karir
+                                </button>
+                                <button onclick="App.navigate('movie')" class="px-6 py-3.5 rounded-2xl glass-panel hover:bg-pink-500/20 text-pink-200 font-semibold text-sm border border-pink-400/40 transition-all flex items-center gap-2 cursor-pointer">
+                                    <i class="fa-solid fa-film"></i> Tonton Inspirasi Movie
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Kartu Ringkasan Tahapan Donald E. Super (Usia 15-24: Exploration) -->
+                    <section class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-compass text-pink-400"></i> 3 Sub-Tahap Eksplorasi Donald E. Super
+                            </h3>
+                            <span class="text-xs text-pink-300/70 hidden sm:inline">Relevan untuk Siswa SMK Kelas XI–XII</span>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="glass-panel glass-panel-hover rounded-2xl p-5 space-y-3">
+                                <div class="w-10 h-10 rounded-xl bg-pink-500/20 border border-pink-400/40 flex items-center justify-center text-pink-400 font-bold">01</div>
+                                <h4 class="font-bold text-white text-base">Crystallizing (Kristalisasi)</h4>
+                                <p class="text-xs text-pink-100/75 leading-relaxed">
+                                    Mengenali minat, nilai kerja, dan konsep diri di dapur: apakah kamu lebih tertarik pada <em>Hot Kitchen</em>, <em>Pastry & Bakery</em>, atau <em>Foodpreneur</em>.
+                                </p>
+                            </div>
+                            <div class="glass-panel glass-panel-hover rounded-2xl p-5 space-y-3">
+                                <div class="w-10 h-10 rounded-xl bg-fuchsia-500/20 border border-fuchsia-400/40 flex items-center justify-center text-fuchsia-400 font-bold">02</div>
+                                <h4 class="font-bold text-white text-base">Specifying (Spesifikasi)</h4>
+                                <p class="text-xs text-pink-100/75 leading-relaxed">
+                                    Mempersempit pilihan karir menjadi target nyata, seperti menentukan lokasi PKL hotel bintang 5 atau merancang konsep bisnis kuliner.
+                                </p>
+                            </div>
+                            <div class="glass-panel glass-panel-hover rounded-2xl p-5 space-y-3">
+                                <div class="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-400/40 flex items-center justify-center text-rose-400 font-bold">03</div>
+                                <h4 class="font-bold text-white text-base">Implementing (Implementasi)</h4>
+                                <p class="text-xs text-pink-100/75 leading-relaxed">
+                                    Mengambil tindakan nyata melalui sertifikasi kompetensi SMK, lomba LKS Tata Boga, magang industri, atau merintis usaha kuliner.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Status Hybrid & Statistik Cepat -->
+                    <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                        <div class="glass-panel rounded-2xl p-4 text-center">
+                            <p class="text-2xl font-extrabold text-pink-400">${historyCount}</p>
+                            <p class="text-xs text-pink-100/70 mt-1">Tes Selesai</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 text-center">
+                            <p class="text-2xl font-extrabold text-fuchsia-400">16–17</p>
+                            <p class="text-xs text-pink-100/70 mt-1">Target Usia SMK</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 text-center">
+                            <p class="text-2xl font-extrabold text-emerald-400">100%</p>
+                            <p class="text-xs text-pink-100/70 mt-1">Dukungan Offline</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 text-center">
+                            <p class="text-2xl font-extrabold text-rose-400">4 Jalur</p>
+                            <p class="text-xs text-pink-100/70 mt-1">Spesialisasi Kuliner</p>
+                        </div>
+                    </section>
+                </div>`;
+            },
+
+            profil() {
+                const profile = SyncManager.getProfile();
+                const history = SyncManager.getHistory();
+
+                return `
+                <div class="view-section max-w-4xl mx-auto space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-white">Profil Siswa & <span class="text-pink-400">Self-Concept</span></h2>
+                            <p class="text-xs text-pink-200/70">Data profil tersimpan secara lokal di perangkat Anda.</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-xs bg-pink-500/20 border border-pink-400/40 text-pink-300 self-start">
+                            <i class="fa-solid fa-graduation-cap mr-1"></i> Siswa SMK Kuliner
+                        </span>
+                    </div>
+
+                    <!-- Form Edit Profil Dummy -->
+                    <form onsubmit="App.saveProfileForm(event)" class="glass-panel rounded-3xl p-6 space-y-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1.5">Nama Lengkap Siswa</label>
+                                <input type="text" id="prof-nama" value="${profile.nama}" required class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1.5">Usia Saat Ini</label>
+                                <input type="text" id="prof-usia" value="${profile.usia}" required class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1.5">Kelas & Konsentrasi Keahlian</label>
+                                <input type="text" id="prof-kelas" value="${profile.kelas}" required class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1.5">Asal Sekolah (SMK)</label>
+                                <input type="text" id="prof-sekolah" value="${profile.sekolah}" required class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-pink-200 mb-1.5">Bidang Kuliner yang Paling Diminati (Konsep Diri Awal)</label>
+                            <select id="prof-minat" class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                                <option value="Culinary Arts & Hot Kitchen" ${profile.minatUtama === 'Culinary Arts & Hot Kitchen' ? 'selected' : ''}>Culinary Arts & Hot Kitchen (Chef Profesional)</option>
+                                <option value="Pastry & Bakery Artisan" ${profile.minatUtama === 'Pastry & Bakery Artisan' ? 'selected' : ''}>Pastry & Bakery Artisan (Patissier / Baker)</option>
+                                <option value="F&B Management & Hospitality" ${profile.minatUtama === 'F&B Management & Hospitality' ? 'selected' : ''}>F&B Management & Hospitality (Perhotelan / Kapal Pesiar)</option>
+                                <option value="Culinary Entrepreneurship" ${profile.minatUtama === 'Culinary Entrepreneurship' ? 'selected' : ''}>Culinary Entrepreneurship (Wirausaha Kuliner / Foodpreneur)</option>
+                            </select>
+                        </div>
+                        <div class="pt-2 flex justify-end">
+                            <button type="submit" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-600 text-white font-semibold text-sm shadow-neon-sm hover:opacity-95 transition-all cursor-pointer">
+                                <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan Profil Lokal
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- Riwayat Sinkronisasi Kuis -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-white text-base"><i class="fa-solid fa-clock-rotate-left text-pink-400 mr-2"></i>Riwayat Hasil Tes & Status Sync</h3>
+                            <button onclick="SyncManager.triggerManualSync()" class="text-xs text-pink-400 hover:underline cursor-pointer">Sinkronkan Sekarang</button>
+                        </div>
+                        ${history.length === 0 ? `
+                            <p class="text-xs text-pink-100/60 py-4 text-center">Belum ada riwayat tes eksplorasi karir. Silakan kerjakan tes terlebih dahulu.</p>
+                        ` : `
+                            <div class="space-y-2.5">
+                                ${history.map(item => `
+                                    <div class="p-3.5 rounded-2xl bg-black/30 border border-pink-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                        <div>
+                                            <p class="text-sm font-bold text-white">${item.dominantTrack} <span class="text-pink-400">(${item.percentage}%)</span></p>
+                                            <p class="text-[11px] text-pink-200/70">${item.stageTitle} • ${item.date}</p>
+                                        </div>
+                                        <div>
+                                            ${item.synced ? `
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                                                    <i class="fa-solid fa-cloud-check"></i> Tersinkronisasi
+                                                </span>
+                                            ` : `
+                                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                                                    <i class="fa-solid fa-cloud-arrow-up"></i> Menunggu Jaringan
+                                                </span>
+                                            `}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+                </div>`;
+            },
+
+            tes() {
+                const state = App.quizState;
+
+                // Tampilan Intro Tes
+                if (state.step === 0) {
+                    return `
+                    <div class="view-section max-w-2xl mx-auto glass-panel rounded-3xl p-6 sm:p-10 text-center space-y-6 border border-pink-500/40">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-fuchsia-600 flex items-center justify-center shadow-neon text-white text-2xl">
+                            <i class="fa-solid fa-kitchen-set"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Instrumen Eksplorasi Karir Kuliner</h2>
+                            <p class="text-xs sm:text-sm text-pink-100/80 leading-relaxed">
+                                Tes ini mengukur kesiapan karir dan pemetaan konsep diri vokasionalmu berdasarkan <strong>Teori Donald E. Super</strong> (Dimensi <em>Crystallizing, Specifying, Adaptability, & Implementing</em>).
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-pink-500/10 border border-pink-400/30 text-left text-xs text-pink-200 space-y-1.5">
+                            <p><i class="fa-solid fa-wifi text-pink-400 mr-2"></i><strong>Mode Hybrid Aktif:</strong> Kamu dapat mengerjakan tes ini meskipun tanpa kuota internet. Jawaban otomatis tersimpan di perangkat dan terunggah saat koneksi kembali.</p>
+                            <p><i class="fa-solid fa-list-ol text-pink-400 mr-2"></i><strong>Jumlah Pertanyaan:</strong> 5 Skenario Praktik & Karir SMK Kuliner.</p>
+                        </div>
+                        <button onclick="App.startQuiz()" class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-gradient-to-r from-pink-600 to-fuchsia-600 hover:from-pink-500 hover:to-fuchsia-500 text-white font-bold text-sm shadow-neon transition-all cursor-pointer">
+                            Mulai Tes Sekarang <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>`;
+                }
+
+                // Tampilan Hasil Skor
+                if (state.step === 99 && state.lastResult) {
+                    const res = state.lastResult;
+                    const interp = QuizData.getStageInterpretation(res.totalScore);
+
+                    return `
+                    <div class="view-section max-w-3xl mx-auto space-y-6">
+                        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-pink-500/50 space-y-6">
+                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-pink-500/20 pb-5">
+                                <div>
+                                    <span class="text-xs uppercase tracking-wider text-pink-400 font-bold">Hasil Analisis Teori Donald E. Super</span>
+                                    <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-1">Profil Karir Kulinermu</h2>
+                                </div>
+                                <div class="text-left sm:text-right">
+                                    <span class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-fuchsia-400">${res.percentage}%</span>
+                                    <p class="text-[11px] text-pink-200/70">Indeks Kematangan Eksplorasi</p>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="inline-block px-3.5 py-1.5 rounded-xl border text-xs font-bold ${interp.badgeColor}">
+                                    ${interp.stage}
+                                </div>
+
+                                <div class="p-4 rounded-2xl bg-gradient-to-r from-pink-600/20 to-fuchsia-600/20 border border-pink-400/40">
+                                    <p class="text-xs text-pink-200 uppercase font-semibold">Rekomendasi Spesialisasi Utama:</p>
+                                    <p class="text-lg sm:text-xl font-extrabold text-white mt-0.5"><i class="fa-solid fa-award text-pink-400 mr-2"></i>${res.dominantTrack}</p>
+                                </div>
+
+                                <p class="text-sm text-pink-100/85 leading-relaxed">${interp.summary}</p>
+
+                                <div class="p-4 rounded-2xl bg-black/30 border border-pink-500/20 space-y-1">
+                                    <h4 class="text-xs font-bold text-pink-300 uppercase"><i class="fa-solid fa-lightbulb mr-1.5"></i>Langkah Tindak Lanjut Siswa SMK (16-17 Tahun):</h4>
+                                    <p class="text-xs sm:text-sm text-pink-100/80 leading-relaxed">${interp.recommendation}</p>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-pink-500/20">
+                                <button onclick="App.startQuiz()" class="px-5 py-2.5 rounded-xl glass-panel hover:bg-pink-500/20 text-pink-200 text-xs font-semibold border border-pink-400/30 cursor-pointer">
+                                    <i class="fa-solid fa-rotate-right mr-1.5"></i> Ulangi Tes
+                                </button>
+                                <button onclick="App.navigate('profil')" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-600 text-white text-xs font-bold shadow-neon-sm cursor-pointer">
+                                    Lihat Riwayat & Status Sync <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>`;
+                }
+
+                // Tampilan Soal Aktif
+                const qIndex = state.step - 1;
+                const question = QuizData.questions[qIndex];
+                const progressPercent = Math.round(((state.step) / QuizData.questions.length) * 100);
+
+                return `
+                <div class="view-section max-w-2xl mx-auto space-y-5">
+                    <!-- Progress Bar -->
+                    <div class="glass-panel rounded-2xl p-4 space-y-2">
+                        <div class="flex justify-between text-xs font-semibold text-pink-200">
+                            <span>Pertanyaan ${state.step} dari ${QuizData.questions.length}</span>
+                            <span>${progressPercent}%</span>
+                        </div>
+                        <div class="w-full h-2.5 bg-black/50 rounded-full overflow-hidden">
+                            <div class="h-full bg-gradient-to-r from-pink-500 to-fuchsia-500 transition-all duration-300" style="width: ${progressPercent}%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Soal -->
+                    <div class="glass-panel rounded-3xl p-6 sm:p-8 space-y-6 border border-pink-500/40">
+                        <span class="inline-block px-3 py-1 rounded-lg bg-pink-500/20 text-pink-300 text-[11px] font-semibold border border-pink-400/30">
+                            Dimensi: ${question.dimension}
+                        </span>
+                        <h3 class="text-lg sm:text-xl font-bold text-white leading-snug">
+                            ${question.text}
+                        </h3>
+                        <div class="space-y-3">
+                            ${question.options.map((opt, idx) => `
+                                <button onclick="App.selectAnswer(${idx})" class="w-full text-left p-4 rounded-2xl glass-panel glass-panel-hover border border-pink-500/25 flex items-start gap-3.5 group cursor-pointer">
+                                    <span class="w-7 h-7 rounded-lg bg-pink-500/20 group-hover:bg-pink-600 text-pink-300 group-hover:text-white font-bold text-xs flex items-center justify-center shrink-0 transition-colors mt-0.5">
+                                        ${String.fromCharCode(65 + idx)}
+                                    </span>
+                                    <span class="text-xs sm:text-sm text-pink-100/90 group-hover:text-white leading-relaxed">${opt.text}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            },
+
+            movie() {
+                const movies = [
+                    {
+                        title: 'Ratatouille (2007)',
+                        tag: 'Self-Concept & Passion',
+                        duration: '1j 51m • Animasi / Drama',
+                        desc: 'Mengajarkan bahwa bakat kuliner ("Anyone Can Cook") bisa tumbuh dari keberanian mengeksplorasi rasa dan mempertahankan standar kualitas diri.',
+                        img: 'https://placehold.co/600x340/2a0826/ff7edb?text=Ratatouille+Culinary+Inspiration'
+                    },
+                    {
+                        title: 'Chef (2014)',
+                        tag: 'Culinary Entrepreneurship',
+                        duration: '1j 54m • Komedi / Drama',
+                        desc: 'Perjalanan seorang chef yang keluar dari zona nyaman restoran demi membangun bisnis food truck mandiri bersama keluarganya.',
+                        img: 'https://placehold.co/600x340/1f0729/ff1493?text=CHEF+Food+Truck+Journey'
+                    },
+                    {
+                        title: 'Burnt (2015)',
+                        tag: 'Kitchen Discipline & Resilience',
+                        duration: '1j 41m • Drama',
+                        desc: 'Gambaran nyata tekanan tinggi di dapur profesional bintang Michelin, pentingnya kerja sama tim, dan bangkit dari kegagalan masa lalu.',
+                        img: 'https://placehold.co/600x340/2d0622/f472b6?text=BURNT+Michelin+Kitchen'
+                    },
+                    {
+                        title: 'Jiro Dreams of Sushi (2011)',
+                        tag: 'Mastery & Dedication',
+                        duration: '1j 21m • Dokumenter',
+                        desc: 'Inspirasi dedikasi seumur hidup terhadap satu spesialisasi kuliner dan bagaimana konsistensi melahirkan keahlian tingkat master.',
+                        img: 'https://placehold.co/600x340/180524/e879f9?text=Jiro+Dreams+of+Sushi'
+                    }
+                ];
+
+                return `
+                <div class="view-section space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2">
+                        <div>
+                            <h2 class="text-2xl font-extrabold text-white">Cinema & <span class="text-pink-400">Culinary Movie</span></h2>
+                            <p class="text-xs sm:text-sm text-pink-200/75">Rekomendasi film inspiratif untuk memperkuat gambaran dunia kerja kuliner (Halaman Placeholder).</p>
+                        </div>
+                        <span class="text-xs px-3 py-1 rounded-full bg-pink-500/20 text-pink-300 border border-pink-400/30 self-start">Media Edukasi Karir</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        ${movies.map(m => `
+                            <div class="glass-panel glass-panel-hover rounded-3xl overflow-hidden flex flex-col justify-between">
+                                <div>
+                                    <div class="relative">
+                                        <img src="${m.img}" alt="${m.title}" onerror="this.src='https://placehold.co/600x340/1a0520/ff1493?text=Culinary+Movie'" class="w-full h-44 object-cover">
+                                        <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-[11px] font-bold bg-black/75 text-pink-300 border border-pink-400/40 backdrop-blur-md">
+                                            ${m.tag}
+                                        </span>
+                                    </div>
+                                    <div class="p-5 space-y-2">
+                                        <p class="text-[11px] text-pink-300/70">${m.duration}</p>
+                                        <h3 class="text-lg font-bold text-white">${m.title}</h3>
+                                        <p class="text-xs text-pink-100/75 leading-relaxed">${m.desc}</p>
+                                    </div>
+                                </div>
+                                <div class="px-5 pb-5">
+                                    <button onclick="UI.showToast('Memuat sinopsis & lembar refleksi film ${m.title}...', 'info')" class="w-full py-2.5 rounded-xl bg-pink-500/20 hover:bg-pink-600 text-pink-200 hover:text-white border border-pink-400/40 text-xs font-semibold transition-all cursor-pointer">
+                                        <i class="fa-solid fa-circle-play mr-1.5"></i> Lihat Panduan Diskusi Film
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            },
+
+            referensi() {
+                const refs = [
+                    {
+                        category: 'Teori Bimbingan Karir',
+                        title: 'Life-Span, Life-Space Theory — Donald E. Super',
+                        desc: 'Konsep perkembangan konsep diri vokasional (Vocational Self-Concept) pada rentang usia remaja 15–24 tahun (Tahap Exploration).'
+                    },
+                    {
+                        category: 'Standar Kompetensi SMK',
+                        title: 'SKKNI Bidang Jasa Boga & Perhotelan',
+                        desc: 'Panduan unit kompetensi wajib bagi siswa SMK Tata Boga sebelum mengikuti Uji Kompetensi Keahlian (UKK) dan sertifikasi BNSP.'
+                    },
+                    {
+                        category: 'Peluang Industri & Wirausaha',
+                        title: 'Peta Karir Lulusan Kuliner 2026',
+                        desc: 'Eksplorasi jenjang karir mulai dari Commis Chef, Demi Chef, Pastry Artisan, Food Stylist, hingga pemilik UMKM Kuliner Digital.'
+                    },
+                    {
+                        category: 'Kesiapan PKL / Magang',
+                        title: 'Panduan Grooming & Kitchen Hygiene (HACCP)',
+                        desc: 'Standar kebersihan pribadi, keselamatan kerja di dapur industri, serta etika komunikasi saat menjalani praktik kerja lapangan.'
+                    }
+                ];
+
+                return `
+                <div class="view-section max-w-4xl mx-auto space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-white">Pustaka & <span class="text-pink-400">Referensi Karir</span></h2>
+                        <p class="text-xs sm:text-sm text-pink-200/75">Kumpulan materi bacaan singkat seputar teori Donald E. Super dan industri kuliner (Halaman Placeholder).</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        ${refs.map(r => `
+                            <div class="glass-panel glass-panel-hover rounded-2xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="space-y-1.5">
+                                    <span class="text-[11px] font-bold uppercase tracking-wider text-pink-400">${r.category}</span>
+                                    <h3 class="text-base font-bold text-white">${r.title}</h3>
+                                    <p class="text-xs text-pink-100/75 leading-relaxed">${r.desc}</p>
+                                </div>
+                                <button onclick="UI.showToast('Membuka ringkasan modul: ${r.title}', 'info')" class="shrink-0 px-4 py-2 rounded-xl bg-pink-500/20 hover:bg-pink-600 text-pink-200 hover:text-white border border-pink-400/40 text-xs font-semibold transition-all cursor-pointer">
+                                    Baca Ringkasan <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>`;
+            },
+
+            kontak() {
+                return `
+                <div class="view-section max-w-3xl mx-auto space-y-6">
+                    <div>
+                        <h2 class="text-2xl font-extrabold text-white">Layanan Konseling & <span class="text-pink-400">Kontak</span></h2>
+                        <p class="text-xs sm:text-sm text-pink-200/75">Butuh diskusi lebih lanjut tentang pilihan tempat PKL atau rencana karirmu? Hubungi Guru BK / Konselor Karir SMK (Halaman Placeholder).</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="glass-panel rounded-2xl p-4 space-y-1">
+                            <i class="fa-solid fa-user-tie text-pink-400 text-lg"></i>
+                            <h4 class="text-sm font-bold text-white">Ruang BK Karir SMK</h4>
+                            <p class="text-xs text-pink-100/70">Senin – Jumat, 08.00 – 15.00 WIB</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 space-y-1">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-lg"></i>
+                            <h4 class="text-sm font-bold text-white">Hotline Konseling</h4>
+                            <p class="text-xs text-pink-100/70">+62 812-3456-7890 (Dummy)</p>
+                        </div>
+                        <div class="glass-panel rounded-2xl p-4 space-y-1">
+                            <i class="fa-solid fa-envelope text-fuchsia-400 text-lg"></i>
+                            <h4 class="text-sm font-bold text-white">Email Bimbingan</h4>
+                            <p class="text-xs text-pink-100/70">bk.kuliner@smk-contoh.sch.id</p>
+                        </div>
+                    </div>
+
+                    <form onsubmit="App.submitDummyContact(event)" class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="font-bold text-white text-base">Kirim Pesan Konsultasi Karir</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1">Nama Siswa</label>
+                                <input type="text" required placeholder="Masukkan namamu..." class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-pink-200 mb-1">Topik Konsultasi</label>
+                                <select class="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400">
+                                    <option>Pemilihan Tempat PKL / Magang</option>
+                                    <option>Konsultasi Hasil Tes Donald E. Super</option>
+                                    <option>Rencana Kuliah vs Langsung Kerja</option>
+                                    <option>Merintis Usaha Kuliner Siswa</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-pink-200 mb-1">Ceritakan Kebingungan atau Rencana Karirmu</label>
+                            <textarea rows="3" required placeholder="Tuliskan pertanyaanmu untuk Guru BK..." class="w-full px-4 py-2.5 rounded-xl bg-black/40 border border-pink-500/30 text-white text-sm focus:outline-none focus:border-pink-400"></textarea>
+                        </div>
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-gradient-to-r from-pink-600 to-fuchsia-600 text-white font-bold text-sm shadow-neon-sm hover:opacity-95 transition-all cursor-pointer">
+                            <i class="fa-solid fa-paper-plane mr-1.5"></i> Kirim Pesan Sekarang
+                        </button>
+                    </form>
+                </div>`;
+            }
+        };
+
+        // Inisialisasi Aplikasi saat DOM siap
+        window.addEventListener('DOMContentLoaded', () => {
+            App.init();
+        });
+    </script>
+</body>
+</html>
